@@ -1,3 +1,4 @@
+import fire
 from typing import Optional
 import torch
 import time
@@ -127,11 +128,15 @@ class LLaMA:
         return next_token
 
 
-
-if __name__ == '__main__':
+def main(
+    checkpoints_dir: str ='llama-2-7b/',
+    tokenizer_path: str ='tokenizer.model',
+    max_seq_len: int = 128,
+    max_batch_size: int = 4,
+    allow_cuda: bool = False
+):
     torch.manual_seed(0)
 
-    allow_cuda = False
     device = 'cuda' if torch.cuda.is_available() and allow_cuda else 'cpu'
 
     prompts = [
@@ -152,11 +157,11 @@ if __name__ == '__main__':
     ]
 
     model = LLaMA.build(
-        checkpoints_dir='llama-2-7b/',
-        tokenizer_path='tokenizer.model',
+        checkpoints_dir=checkpoints_dir,
+        tokenizer_path=tokenizer_path,
+        max_seq_len=max_seq_len,
+        max_batch_size=max_batch_size,
         load_model=True,
-        max_seq_len=128,
-        max_batch_size=len(prompts),
         device=device
     )
 
@@ -166,3 +171,6 @@ if __name__ == '__main__':
         print(f'{out_texts[i]}')
         print('-' * 50)
 
+
+if __name__ == '__main__':
+    fire.Fire(main)
