@@ -42,8 +42,6 @@ class LLaMA:
         
         if device == "cuda":
             torch.set_default_tensor_type(torch.cuda.HalfTensor)
-        else:
-            torch.set_default_tensor_type(torch.BFloat16Tensor)
         
         model = Transformer(model_args).to(device)
 
@@ -156,7 +154,7 @@ if __name__ == '__main__':
         checkpoints_dir='llama-2-7b/',
         tokenizer_path='tokenizer.model',
         load_model=True,
-        max_seq_len=1024,
+        max_seq_len=128,
         max_batch_size=len(prompts),
         device=device
     )
